@@ -1,4 +1,4 @@
--rrequirements.txt
-flask
-sqlalchemy
+-r requirements.txt
+mypy
 pre-commit
+python-dotenv
