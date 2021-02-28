@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create New Menu Item</title>
+</head>
+<body>
+<h1>New Menu Item</h1>
+
+<form action='{{ url_for("create_new_menu_item", restaurant_id=restaurant_id) }}' method="post">
+    <p>Name:</p>
+    <input type="text" size="30" name="name">
+    <p>Description:</p>
+    <input type="text" size="30" name="description">
+    <p>Price:</p>
+    <input type="text" size="30" name="price">
+    <p>Course:</p>
+    <input type="radio" id="entree" name="course" value="entree">
+    <label for="entree">Entree</label><br>
+    <input type="radio" id="main" name="course" value="main">
+    <label for="main">Main</label><br>
+    <input type="radio" id="dessert" name="course" value="dessert">
+    <label for="dessert">Dessert</label><br>
+    <input type="radio" id="beverage" name="course" value="beverage">
+    <label for="beverage">Beverage</label><br>
+    <input type="submit" value="Create">
+    <a href='{{ url_for("show_menu", restaurant_id=restaurant_id) }}'>Cancel</a>
+</form>
+</body>
+</html>
