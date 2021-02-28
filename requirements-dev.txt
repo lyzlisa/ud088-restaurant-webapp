@@ -1,0 +1,4 @@
+-rrequirements.txt
+flask
+sqlalchemy
+pre-commit
