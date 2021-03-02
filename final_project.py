@@ -1,21 +1,14 @@
 import os
 
 from flask import Flask, render_template, request, redirect, url_for, flash
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
 
-from database_setup import Base, Restaurant, MenuItem
+from db import DBSession
+from models import Restaurant, MenuItem
+from api import api
 
 app = Flask(__name__)
 app.url_map.strict_slashes = False
-
-engine = create_engine(
-    "sqlite:///restaurantmenu.db",
-    connect_args={"check_same_thread": False},
-)
-Base.metadata.bind = engine
-
-DBSession = sessionmaker(bind=engine)
+app.register_blueprint(api)
 
 
 @app.before_request
@@ -90,7 +83,7 @@ def delete_restaurant(restaurant_id: int):
 
 
 @app.route("/restaurants/<int:restaurant_id>")
-@app.route("/restaurants/<int:restaurant_id>/menu")
+@app.route("/restaurants/<int:restaurant_id>/menus")
 def show_menu(restaurant_id: int):
     session = DBSession()
 
@@ -104,7 +97,7 @@ def show_menu(restaurant_id: int):
     )
 
 
-@app.route("/restaurants/<int:restaurant_id>/menu/new", methods=["GET", "POST"])
+@app.route("/restaurants/<int:restaurant_id>/menus/new", methods=["GET", "POST"])
 def create_new_menu_item(restaurant_id: int):
     session = DBSession()
 
@@ -119,7 +112,7 @@ def create_new_menu_item(restaurant_id: int):
 
 
 @app.route(
-    "/restaurants/<int:restaurant_id>/menu/<int:menu_id>/edit",
+    "/restaurants/<int:restaurant_id>/menus/<int:menu_id>/edit",
     methods=["GET", "POST"],
 )
 def edit_menu_item(restaurant_id: int, menu_id: int):
@@ -144,7 +137,7 @@ def edit_menu_item(restaurant_id: int, menu_id: int):
 
 
 @app.route(
-    "/restaurants/<int:restaurant_id>/menu/<int:menu_id>/delete",
+    "/restaurants/<int:restaurant_id>/menus/<int:menu_id>/delete",
     methods=["GET", "POST"],
 )
 def delete_menu_item(restaurant_id: int, menu_id: int):
