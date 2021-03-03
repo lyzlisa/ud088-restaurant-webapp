@@ -62,3 +62,24 @@ def put_restaurant(restaurant_id: int):
     restaurant.name = request.json["name"]
     session.commit()
     return jsonify({"id": restaurant.id, "name": restaurant.name})
+
+
+@api.route("/api/v1/restaurants/<int:restaurant_id>", methods=["DELETE"])
+def delete_restaurant(restaurant_id: int):
+    session = DBSession()
+    restaurant = (
+        session.query(Restaurant).filter(Restaurant.id == restaurant_id).one_or_none()
+    )
+    if restaurant is None:
+        return (
+            jsonify({"details": f"Restaurant {restaurant_id} does not exist"}),
+            404,
+            {},
+        )
+    session.delete(restaurant)
+    session.commit()
+    return (
+        None,
+        204,
+        {},
+    )
