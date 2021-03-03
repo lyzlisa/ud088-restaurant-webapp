@@ -27,8 +27,7 @@ class MenuItem(Base):
     restaurant_id = Column(Integer, ForeignKey("restaurant.id"))
     restaurant = relationship(Restaurant)
 
-    @property
-    def serialize(self):
+    def to_dict(self) -> dict:
         """Returns object data in easily serializable format"""
         return {
             "name": self.name,
