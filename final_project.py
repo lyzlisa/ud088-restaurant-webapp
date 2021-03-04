@@ -34,6 +34,7 @@ def create_new_restaurant():
         new_restaurant = Restaurant(name=request.form["name"])
         session.add(new_restaurant)
         session.commit()
+        flash(f"New restaurant {new_restaurant.name} created")
         return redirect(url_for("show_restaurants"))
     else:
         return render_template("1_new_restaurants.html")
@@ -51,7 +52,7 @@ def edit_restaurant(restaurant_id: int):
             restaurant_to_edit.name = request.form["name"]
         session.add(restaurant_to_edit)
         session.commit()
-        flash(f"Edited restaurant to {restaurant_to_edit.name}")
+        flash(f"Restaurant successfully edited to {restaurant_to_edit.name}")
         return redirect(url_for("show_restaurants"))
     else:
         return render_template(
@@ -72,7 +73,7 @@ def delete_restaurant(restaurant_id: int):
     if request.method == "POST":
         session.delete(restaurant_to_delete)
         session.commit()
-        flash(f"Deleted restaurant {restaurant_to_delete.name}")
+        flash(f"Restaurant {restaurant_to_delete.name} successfully deleted")
         return redirect(url_for("show_restaurants"))
     else:
         return render_template(
@@ -126,7 +127,7 @@ def edit_menu_item(restaurant_id: int, menu_id: int):
 
         session.add(item_to_edit)
         session.commit()
-        flash(f"Edited menu item to {item_to_edit.name}")
+        flash(f"Menu item successfully edited to {item_to_edit.name}")
         return redirect(url_for("show_menu", restaurant_id=restaurant_id))
     else:
         return render_template(
@@ -148,7 +149,7 @@ def delete_menu_item(restaurant_id: int, menu_id: int):
     if request.method == "POST":
         session.delete(item_to_delete)
         session.commit()
-        flash(f"Deleted menu item {item_to_delete.name}")
+        flash(f"Menu item {item_to_delete.name} successfully deleted")
         return redirect(url_for("show_menu", restaurant_id=restaurant_id))
     else:
         return render_template(
