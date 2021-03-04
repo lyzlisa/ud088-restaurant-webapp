@@ -1,6 +1,6 @@
 from flask import jsonify, request, url_for
 from . import api
-from models import MenuItem
+from models import MenuItem, Restaurant
 from db import DBSession
 
 
@@ -80,4 +80,33 @@ def put_patch_menu(restaurant_id: int, menu_id: int):
     methods=["DELETE"],
 )
 def delete_menu(restaurant_id: int, menu_id: int):
-    pass
+    session = DBSession()
+    restaurant = session.query(Restaurant).filter_by(id=restaurant_id).one_or_none()
+    item = (
+        session.query(MenuItem)
+        .filter_by(id=menu_id, restaurant_id=restaurant_id)
+        .one_or_none()
+    )
+    if restaurant is None:
+        return (
+            jsonify({"details": f"Restaurant {restaurant_id} does not exist"}),
+            404,
+            {},
+        )
+    if item is None:
+        return (
+            jsonify(
+                {
+                    "details": f"Menu item {menu_id} does not exist in restaurant {restaurant.name}",
+                },
+            ),
+            404,
+            {},
+        )
+    session.delete(item)
+    session.commit()
+    return (
+        None,
+        204,
+        {},
+    )
